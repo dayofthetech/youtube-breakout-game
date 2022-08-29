@@ -1,3 +1,4 @@
+//find the class of grid
 const grid = document.querySelector('.grid')
 const scoreDisplay = document.querySelector('#score')
 const blockWidth = 100
@@ -49,10 +50,20 @@ const blocks = [
 //draw my blocks
 function addBlocks() {
   for (let i = 0; i < blocks.length; i++) {
+    //js to create an element, in this example, its creating a div
+    //which in turn is a block
     const block = document.createElement('div')
+    //now from that block var above, you are adding a new class, in this case
+    //class of block, which is automatically styled from the css
     block.classList.add('block')
-    block.style.left = blocks[i].bottomLeft[0] + 'px'  
-    block.style.bottom = blocks[i].bottomLeft[1] + 'px'  
+    block.style.left = blocks[i].bottomLeft[0] + 'px'
+    block.style.bottom = blocks[i].bottomLeft[1] + 'px'
+    //now after grabbing that grid class element, you are appending the
+    //block characteristics, or styling in this case
+    //so from here, you are able to create an element and givin it a class,
+    //you don't necessarily have to get all the elements in the html
+    //now grid, which is a div, you are appending block which is a class
+    //<div class "block">
     grid.appendChild(block)
     console.log(blocks[i].bottomLeft)
   }
@@ -78,14 +89,14 @@ function moveUser(e) {
       if (currentPosition[0] > 0) {
         currentPosition[0] -= 10
         console.log(currentPosition[0] > 0)
-        drawUser()   
+        drawUser()
       }
       break
     case 'ArrowRight':
       if (currentPosition[0] < (boardWidth - blockWidth)) {
         currentPosition[0] += 10
         console.log(currentPosition[0])
-        drawUser()   
+        drawUser()
       }
       break
   }
@@ -120,13 +131,13 @@ function checkForCollisions() {
     if
     (
       (ballCurrentPosition[0] > blocks[i].bottomLeft[0] && ballCurrentPosition[0] < blocks[i].bottomRight[0]) &&
-      ((ballCurrentPosition[1] + ballDiameter) > blocks[i].bottomLeft[1] && ballCurrentPosition[1] < blocks[i].topLeft[1]) 
+      ((ballCurrentPosition[1] + ballDiameter) > blocks[i].bottomLeft[1] && ballCurrentPosition[1] < blocks[i].topLeft[1])
     )
       {
       const allBlocks = Array.from(document.querySelectorAll('.block'))
       allBlocks[i].classList.remove('block')
       blocks.splice(i,1)
-      changeDirection()   
+      changeDirection()
       score++
       scoreDisplay.innerHTML = score
       if (blocks.length == 0) {
@@ -146,7 +157,7 @@ function checkForCollisions() {
   if
   (
     (ballCurrentPosition[0] > currentPosition[0] && ballCurrentPosition[0] < currentPosition[0] + blockWidth) &&
-    (ballCurrentPosition[1] > currentPosition[1] && ballCurrentPosition[1] < currentPosition[1] + blockHeight ) 
+    (ballCurrentPosition[1] > currentPosition[1] && ballCurrentPosition[1] < currentPosition[1] + blockHeight )
   )
   {
     changeDirection()
