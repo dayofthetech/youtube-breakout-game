@@ -12,6 +12,7 @@ let yDirection = 2
 const userStart = [230, 10]
 let currentPosition = userStart
 
+//start position of the ball
 const ballStart = [270, 40]
 let ballCurrentPosition = ballStart
 
@@ -20,6 +21,7 @@ let score = 0
 
 //my block
 class Block {
+  //this is the botton left of the block
   constructor(xAxis, yAxis) {
     this.bottomLeft = [xAxis, yAxis]
     this.bottomRight = [xAxis + blockWidth, yAxis]
@@ -30,11 +32,15 @@ class Block {
 
 //all my blocks
 const blocks = [
+  //the numbers inside the Blocks class are the
+  //points of the bottom corner, that why the first 5 have the same 270
+  //you are moving sideways,
   new Block(10, 270),
   new Block(120, 270),
   new Block(230, 270),
   new Block(340, 270),
   new Block(450, 270),
+  //the next five, moved one row down and then sideways
   new Block(10, 240),
   new Block(120, 240),
   new Block(230, 240),
@@ -70,23 +76,29 @@ function addBlocks() {
 }
 addBlocks()
 
-//add user
+//add user to the screen
 const user = document.createElement('div')
 user.classList.add('user')
 grid.appendChild(user)
 drawUser()
 
 //add ball
+//this creates a div within the html doc
 const ball = document.createElement('div')
 ball.classList.add('ball')
+//we are putting the ball, inside the parent of grid, grid in itself is a div
 grid.appendChild(ball)
+//this drawBall function is used more than one.
 drawBall()
 
 //move user
 function moveUser(e) {
+  //this is to listen for left or right
   switch (e.key) {
     case 'ArrowLeft':
+      //by clicking on left arrow
       if (currentPosition[0] > 0) {
+        //and as long the position is not pass the edge
         currentPosition[0] -= 10
         console.log(currentPosition[0] > 0)
         drawUser()
@@ -119,6 +131,9 @@ function drawBall() {
 function moveBall() {
     ballCurrentPosition[0] += xDirection
     ballCurrentPosition[1] += yDirection
+    //after changing the position of the ball, you redraw it
+    //for example, the ball new position is what describe above
+    //redraw it
     drawBall()
     checkForCollisions()
 }
@@ -130,17 +145,26 @@ function checkForCollisions() {
   for (let i = 0; i < blocks.length; i++){
     if
     (
-      (ballCurrentPosition[0] > blocks[i].bottomLeft[0] && ballCurrentPosition[0] < blocks[i].bottomRight[0]) &&
-      ((ballCurrentPosition[1] + ballDiameter) > blocks[i].bottomLeft[1] && ballCurrentPosition[1] < blocks[i].topLeft[1])
+      //if the ball Xaxis is larger than block Xaxis but smaller than right Xaxis
+      (ballCurrentPosition[0] > blocks[i].bottomLeft[0]
+        && ballCurrentPosition[0] < blocks[i].bottomRight[0])
+        &&
+      ((ballCurrentPosition[1] + ballDiameter) > blocks[i].bottomLeft[1]
+      && ballCurrentPosition[1] < blocks[i].topLeft[1])
     )
-      {
+      { //this is within the first if
       const allBlocks = Array.from(document.querySelectorAll('.block'))
+      //and after the ball touches the i block, which i block is whatever block you are dealing with
       allBlocks[i].classList.remove('block')
+      //by doing splice, you remove the index of i block
+      //if the ball hits block 3 then it splice remove 3
       blocks.splice(i,1)
+      //and once remove, you change direction
       changeDirection()
       score++
       scoreDisplay.innerHTML = score
       if (blocks.length == 0) {
+        //this will display text on the html
         scoreDisplay.innerHTML = 'You Win!'
         clearInterval(timerId)
         document.removeEventListener('keydown', moveUser)
